@@ -46,6 +46,6 @@ BuildRequires:  golang(github.com/stretchr/testify/require)
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1%{?dist}.20210830git4d90952
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1.20210830git4d90952
 - Initial package
 
