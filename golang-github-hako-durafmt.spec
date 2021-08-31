@@ -4,7 +4,6 @@
 # https://github.com/hako/durafmt
 %global goipath         github.com/hako/durafmt
 Version:                1.0.0
-%global tag             1.0.0
 %global commit          5c1018a4e16b9db6718f25e524de025b1fc67303
 
 %gometa
