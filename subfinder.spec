@@ -65,8 +65,8 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %endif
 
 %files
-%license LICENSE
-%doc ISSUE_TEMPLATE.md THANKS.md README.md DISCLAIMER.md
+%license LICENSE.md
+%doc THANKS.md README.md DISCLAIMER.md
 %{_bindir}/*
 
 %gopkgfiles
