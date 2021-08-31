@@ -14,9 +14,9 @@ of your choice with a list of user-supplied resolvers.}
 %global golicenses      LICENSE.md
 %global godocs          SECURITY.md README.md
 
-Name:           %{goname}
+Name:           dnsx
 Release:        1%{?dist}
-Summary:        Dnsx is a fast and multi-purpose DNS toolkit allow to run multiple DNS queries of your choice with a list of user-supplied resolvers
+Summary:        A fast and multi-purpose DNS toolkit to run multiple DNS queries
 
 License:        MIT
 URL:            %{gourl}
@@ -66,6 +66,6 @@ install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 1.0.6-1%{?dist}
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 1.0.6-1
 - Initial package
 
