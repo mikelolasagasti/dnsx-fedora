@@ -8,7 +8,7 @@ Version:                0.0.1
 %gometa
 
 %global common_description %{expand:
-Hybrid memory/disk map.}
+Hybrid memory/disk map}
 
 %global golicenses      LICENSE
 %global godocs          README.md example
