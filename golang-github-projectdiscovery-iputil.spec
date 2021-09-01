@@ -40,11 +40,14 @@ BuildRequires:  golang(github.com/stretchr/testify/require)
 %install
 %gopkginstall
 
-#remove check
+%if %{with check}
+%check
+%gocheck
+%endif
 
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1%{?dist}.20210830git3a30fcd
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1.20210830git3a30fcd
 - Initial package
 
