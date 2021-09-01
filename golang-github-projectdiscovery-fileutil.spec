@@ -8,7 +8,7 @@
 %gometa
 
 %global common_description %{expand:
-# FIXME}
+Various helpers to interact with files}
 
 %global golicenses      LICENSE.md
 %global godocs          README.md
@@ -21,6 +21,7 @@ Summary:        None
 License:        MIT
 URL:            %{gourl}
 Source0:        %{gosource}
+Patch0001:      0001-Skip-network-test.patch
 
 BuildRequires:  golang(github.com/karrick/godirwalk)
 
@@ -37,17 +38,20 @@ BuildRequires:  golang(github.com/stretchr/testify/require)
 %prep
 %goprep
 
+%patch0001 -p1
+
 %install
 %gopkginstall
 
-#%%if %{with check}
-#%%check
-#%%gocheck
-#%%endif
+%if %{with check}
+%check
+ln -s %{_builddir}/fileutil-%{commit} %{_builddir}/fileutil
+%gocheck
+%endif
 
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1%{?dist}.20210830gitebba15f
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0-0.1.20210830gitebba15f
 - Initial package
 
