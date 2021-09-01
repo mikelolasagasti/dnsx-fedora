@@ -33,29 +33,17 @@ BuildRequires:  golang(github.com/syndtr/goleveldb/leveldb/util)
 %prep
 %goprep
 
-%build
-for cmd in cmd/* ; do
-  %gobuild -o %{gobuilddir}/bin/$(basename $cmd) %{goipath}/$cmd
-done
-
 %install
 %gopkginstall
-install -m 0755 -vd                     %{buildroot}%{_bindir}
-install -m 0755 -vp %{gobuilddir}/bin/* %{buildroot}%{_bindir}/
 
 %if %{with check}
 %check
 %gocheck
 %endif
 
-%files
-%license LICENSE
-%doc README.md
-%{_bindir}/*
-
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.1-1%{?dist}
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.1-1
 - Initial package
 
