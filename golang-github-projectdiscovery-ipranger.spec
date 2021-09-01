@@ -43,6 +43,6 @@ BuildRequires:  golang(github.com/yl2chen/cidranger)
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.2-1%{?dist}
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.2-1
 - Initial package
 
