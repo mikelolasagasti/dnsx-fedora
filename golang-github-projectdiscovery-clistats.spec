@@ -42,6 +42,6 @@ BuildRequires:  golang(go.uber.org/atomic)
 %gopkgfiles
 
 %changelog
-* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.8-1%{?dist}
+* Mon Aug 30 2021 Mikel Olasagasti Uranga <mikel@olasagasti.info> - 0.0.8-1
 - Initial package
 
