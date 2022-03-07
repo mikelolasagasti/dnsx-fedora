@@ -3,7 +3,7 @@
 %global debug_package %{nil}
 
 # https://github.com/projectdiscovery/subfinder
-%global goipath         github.com/projectdiscovery/subfinder/v2
+%global goipath         github.com/projectdiscovery/subfinder
 Version:                2.5.0
 
 %gometa
