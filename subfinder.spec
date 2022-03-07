@@ -3,10 +3,12 @@
 %global debug_package %{nil}
 
 # https://github.com/projectdiscovery/subfinder
-%global goipath         github.com/projectdiscovery/subfinder
+%global goipath         github.com/projectdiscovery/subfinder/v2
 Version:                2.5.0
 
 %gometa
+
+%global goname          subfinder
 
 %global common_description %{expand:
 Subfinder is a subdomain discovery tool that discovers valid subdomains for
