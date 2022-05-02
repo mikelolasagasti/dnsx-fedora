@@ -4,7 +4,7 @@
 
 # https://github.com/projectdiscovery/stringsutil
 %global goipath         github.com/projectdiscovery/stringsutil
-%global commit          7c05502ca8e9f795d6974992c3dbe63740d26925
+%global commit          b54fb5dc6833a2b2afa9852688f5234643ec6905
 
 %gometa
 
