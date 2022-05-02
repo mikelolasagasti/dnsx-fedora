@@ -38,13 +38,13 @@ Source0:        %{gosource}
 %gopkginstall
 
 %if %{with check}
+%check
 ln -s %{_builddir}/fileutil-%{commit} %{_builddir}/fileutil
 # TestDownloadFile requires network
 for test in "TestDownloadFile" \
 ; do
 awk -i inplace '/^func.*'"$test"'\(/ { print; print "\tt.Skip(\"disabled failing test\")"; next}1' $(grep -rl $test)
 done
-%check
 %gocheck
 %endif
 
