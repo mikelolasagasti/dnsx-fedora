@@ -3,7 +3,7 @@
 
 # https://github.com/projectdiscovery/dnsx
 %global goipath         github.com/projectdiscovery/dnsx
-Version:                1.0.9
+Version:                1.1.0
 
 %gometa
 
@@ -36,9 +36,7 @@ Source0:        %{gosource}
 %go_generate_buildrequires
 
 %build
-for cmd in cmd/* ; do
-  %gobuild -o %{gobuilddir}/bin/$(basename $cmd) %{goipath}/$cmd
-done
+%gobuild -o %{gobuilddir}/bin/dnsx %{goipath}/cmd/dnsx
 
 %install
 %gopkginstall
