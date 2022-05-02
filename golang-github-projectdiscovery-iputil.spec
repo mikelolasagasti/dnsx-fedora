@@ -9,7 +9,7 @@
 %gometa
 
 %global common_description %{expand:
-# FIXME}
+Various helpers to interact with ips and cidrs.}
 
 %global golicenses      LICENSE.md
 %global godocs          README.md
@@ -17,7 +17,7 @@
 Name:           %{goname}
 Version:        0
 Release:        %autorelease -p
-Summary:        None
+Summary:        Various helpers to interact with ips and cidrs
 
 License:        MIT
 URL:            %{gourl}
