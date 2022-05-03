@@ -25,8 +25,8 @@ Summary:        A subdomain discovery tool that discovers valid subdomains for w
 License:        MIT
 URL:            %{gourl}
 Source0:        %{gosource}
-# https://patch-diff.githubusercontent.com/raw/projectdiscovery/subfinder/pull/542.patch
-Patch0001:      https://patch-diff.githubusercontent.com/raw/projectdiscovery/subfinder/pull/542.patch
+#https://github.com/projectdiscovery/subfinder/pull/542
+Patch0001:      https://github.com/projectdiscovery/subfinder/pull/542/commits/6de5109d2a6a1e51b568bf0f0cde26959d2c350a.patch
 
 %description
 %{common_description}
