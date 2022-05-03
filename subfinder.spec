@@ -26,7 +26,7 @@ License:        MIT
 URL:            %{gourl}
 Source0:        %{gosource}
 # https://patch-diff.githubusercontent.com/raw/projectdiscovery/subfinder/pull/542.patch
-Patch0001:      542.patch
+Patch0001:      https://patch-diff.githubusercontent.com/raw/projectdiscovery/subfinder/pull/542.patch
 
 %description
 %{common_description}
