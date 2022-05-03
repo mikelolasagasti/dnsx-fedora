@@ -1,0 +1,328 @@
+From 80bec05573cfcfe3b2ef16253dd5a8f4374768aa Mon Sep 17 00:00:00 2001
+From: zhangchengguo <zhangchengguo@360.cn>
+Date: Tue, 8 Mar 2022 16:22:50 +0800
+Subject: [PATCH 1/2] fix readme golang demo for v2.5.0
+
+---
+ README.md | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
+
+diff --git a/README.md b/README.md
+index d6c91e31..2507cc48 100644
+--- a/README.md
++++ b/README.md
+@@ -242,23 +242,16 @@ import (
+ )
+ 
+ func main() {
+-	config := runner.ConfigFile{
+-		// Use the default list of resolvers by marshaling it to the config
+-		Resolvers: resolve.DefaultResolvers,
+-		// Use the default list of passive sources
+-		Sources: passive.DefaultSources,
+-		// Use the default list of all passive sources
+-		AllSources: passive.DefaultAllSources,
+-		// Use the default list of recursive sources
+-		Recursive: passive.DefaultRecursiveSources,
+-	}
+-
+ 	runnerInstance, err := runner.NewRunner(&runner.Options{
+ 		Threads:            10, // Thread controls the number of threads to use for active enumerations
+ 		Timeout:            30, // Timeout is the seconds to wait for sources to respond
+ 		MaxEnumerationTime: 10, // MaxEnumerationTime is the maximum amount of time in mins to wait for enumeration
+-		YAMLConfig:         config,
+-	})
++		Resolvers:          resolve.DefaultResolvers, // Use the default list of resolvers by marshaling it to the config
++		Sources:            passive.DefaultSources, // Use the default list of passive sources
++		AllSources:         passive.DefaultAllSources, // Use the default list of all passive sources
++		Recursive:          passive.DefaultRecursiveSources,	// Use the default list of recursive sources
++		Providers:          &runner.Providers{}, // Use empty api keys for all providers
++  })
+ 
+ 	buf := bytes.Buffer{}
+ 	err = runnerInstance.EnumerateSingleDomain(context.Background(), "projectdiscovery.io", []io.Writer{&buf})
+
+From 6de5109d2a6a1e51b568bf0f0cde26959d2c350a Mon Sep 17 00:00:00 2001
+From: Mikel Olasagasti Uranga <mikel@olasagasti.info>
+Date: Tue, 3 May 2022 09:31:20 +0200
+Subject: [PATCH 2/2] Remove spyse source
+
+spyse is closed now, with main domain and social network profiles down,
+so removing this part of code from subfinder. If they start to operate
+again restoring this should be easy.
+---
+ README.md                                 |   2 +-
+ v2/go.mod                                 |   3 -
+ v2/go.sum                                 |   8 --
+ v2/pkg/passive/sources.go                 |   5 -
+ v2/pkg/runner/config.go                   |   4 -
+ v2/pkg/subscraping/sources/spyse/spyse.go | 108 ----------------------
+ v2/pkg/subscraping/types.go               |   1 -
+ 7 files changed, 1 insertion(+), 130 deletions(-)
+ delete mode 100644 v2/pkg/subscraping/sources/spyse/spyse.go
+
+diff --git a/README.md b/README.md
+index 2507cc48..36543c67 100644
+--- a/README.md
++++ b/README.md
+@@ -109,7 +109,7 @@ go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+ 
+ Subfinder will work after using the installation instructions however to configure Subfinder to work with certain services, you will need to have setup API keys. The following services do not work without an API key:
+ 
+-[Binaryedge](https://binaryedge.io), [C99](https://api.c99.nl/), [Certspotter](https://sslmate.com/certspotter/api/), [Chinaz](http://my.chinaz.com/ChinazAPI/DataCenter/MyDataApi), [Censys](https://censys.io), [Chaos](https://chaos.projectdiscovery.io), [DnsDB](https://api.dnsdb.info), [Fofa](https://fofa.so/static_pages/api_help), [Github](https://github.com), [Intelx](https://intelx.io), [Passivetotal](http://passivetotal.org), [Robtex](https://www.robtex.com/api/), [SecurityTrails](http://securitytrails.com), [Shodan](https://shodan.io), [Spyse](https://spyse.com), [Threatbook](https://x.threatbook.cn/en), [Virustotal](https://www.virustotal.com), [Zoomeye](https://www.zoomeye.org)
++[Binaryedge](https://binaryedge.io), [C99](https://api.c99.nl/), [Certspotter](https://sslmate.com/certspotter/api/), [Chinaz](http://my.chinaz.com/ChinazAPI/DataCenter/MyDataApi), [Censys](https://censys.io), [Chaos](https://chaos.projectdiscovery.io), [DnsDB](https://api.dnsdb.info), [Fofa](https://fofa.so/static_pages/api_help), [Github](https://github.com), [Intelx](https://intelx.io), [Passivetotal](http://passivetotal.org), [Robtex](https://www.robtex.com/api/), [SecurityTrails](http://securitytrails.com), [Shodan](https://shodan.io), [Threatbook](https://x.threatbook.cn/en), [Virustotal](https://www.virustotal.com), [Zoomeye](https://www.zoomeye.org)
+ 
+ Theses values are stored in the `$HOME/.config/subfinder/provider-config.yaml` file which will be created when you run the tool for the first time. The configuration file uses the YAML format. Multiple API keys can be specified for each of these services from which one of them will be used for enumeration.
+ 
+diff --git a/v2/go.mod b/v2/go.mod
+index 87cb618d..7dd7120f 100644
+--- a/v2/go.mod
++++ b/v2/go.mod
+@@ -13,7 +13,6 @@ require (
+ 	github.com/projectdiscovery/fileutil v0.0.0-20210928100737-cab279c5d4b5
+ 	github.com/projectdiscovery/gologger v1.1.4
+ 	github.com/rs/xid v1.3.0
+-	github.com/spyse-com/go-spyse v1.2.3
+ 	github.com/stretchr/testify v1.7.0
+ 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80
+ 	go.uber.org/ratelimit v0.2.0
+@@ -28,7 +27,6 @@ require (
+ 	github.com/davecgh/go-spew v1.1.1 // indirect
+ 	github.com/logrusorgru/aurora v2.0.3+incompatible // indirect
+ 	github.com/miekg/dns v1.1.41 // indirect
+-	github.com/mitchellh/mapstructure v1.4.1 // indirect
+ 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+ 	github.com/modern-go/reflect2 v1.0.1 // indirect
+ 	github.com/pkg/errors v0.9.1
+@@ -38,6 +36,5 @@ require (
+ 	github.com/projectdiscovery/stringsutil v0.0.0-20210804142656-fd3c28dbaafe // indirect
+ 	golang.org/x/net v0.0.0-20210415231046-e915ea6b2b7d // indirect
+ 	golang.org/x/sys v0.0.0-20210419170143-37df388d1f33 // indirect
+-	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
+ 	gopkg.in/yaml.v2 v2.4.0 // indirect
+ )
+diff --git a/v2/go.sum b/v2/go.sum
+index 993b671f..a9bdfb34 100644
+--- a/v2/go.sum
++++ b/v2/go.sum
+@@ -63,8 +63,6 @@ github.com/miekg/dns v1.1.29/go.mod h1:KNUDUusw/aVsxyTYZM1oqvCicbwhgbNgztCETuNZ7
+ github.com/miekg/dns v1.1.41 h1:WMszZWJG0XmzbK9FEmzH2TVcqYzFesusSIB41b8KHxY=
+ github.com/miekg/dns v1.1.41/go.mod h1:p6aan82bvRIyn+zDIv9xYNUpwa73JcSh9BKwknJysuI=
+ github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
+-github.com/mitchellh/mapstructure v1.4.1 h1:CpVNEelQCZBooIPDn+AR3NpivK/TIKU8bDxdASFVQag=
+-github.com/mitchellh/mapstructure v1.4.1/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+ github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
+ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=
+ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJC0mAP4ikYIbvyc7fijjWJddQyLn8Ig3JB5CqoB9Q=
+@@ -95,8 +93,6 @@ github.com/projectdiscovery/fdmax v0.0.3 h1:FM6lv9expZ/rEEBI9tkRh6tx3DV0gtpwzdc0
+ github.com/projectdiscovery/fdmax v0.0.3/go.mod h1:NWRcaR7JTO7fC27H4jCl9n7Z+KIredwpgw1fV+4KrKI=
+ github.com/projectdiscovery/fileutil v0.0.0-20210928100737-cab279c5d4b5 h1:2dbm7UhrAKnccZttr78CAmG768sSCd+MBn4ayLVDeqA=
+ github.com/projectdiscovery/fileutil v0.0.0-20210928100737-cab279c5d4b5/go.mod h1:U+QCpQnX8o2N2w0VUGyAzjM3yBAe4BKedVElxiImsx0=
+-github.com/projectdiscovery/goflags v0.0.8-0.20220208063718-9bbeacc2fb8f h1:FKTkdM1pPIL0gQRRQDoWjd/mZz+4DZ2Bk1l+ZbOJmIQ=
+-github.com/projectdiscovery/goflags v0.0.8-0.20220208063718-9bbeacc2fb8f/go.mod h1:Jjwsf4eEBPXDSQI2Y+6fd3dBumJv/J1U0nmpM+hy2YY=
+ github.com/projectdiscovery/goflags v0.0.8-0.20220328195035-cc76049ee216 h1:Th8GrVWt6LJQAwneHikni4BpoLEPa69DPEnYCxAINmo=
+ github.com/projectdiscovery/goflags v0.0.8-0.20220328195035-cc76049ee216/go.mod h1:37KhVbVLllyuIAgpXGqcvE/hsFEwJ+ctEUSHawjhsBY=
+ github.com/projectdiscovery/gologger v1.0.0/go.mod h1:Ok+axMqK53bWNwDSU1nTNwITLYMXMdZtRc8/y1c7sWE=
+@@ -110,8 +106,6 @@ github.com/projectdiscovery/stringsutil v0.0.0-20210804142656-fd3c28dbaafe/go.mo
+ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
+ github.com/rs/xid v1.3.0 h1:6NjYksEUlhurdVehpc7S7dk6DAmcKv8V9gG0FsVN2U4=
+ github.com/rs/xid v1.3.0/go.mod h1:trrq9SKmegXys3aeAKXMUTdJsYXVwGY3RLcfgqegfbg=
+-github.com/spyse-com/go-spyse v1.2.3 h1:0qo0OP5kLv0equyvI7H5pAGuDFTiFON3zXLv4BSw1yY=
+-github.com/spyse-com/go-spyse v1.2.3/go.mod h1:MTle/KKITU7B2oSlfpzHZPc2k+WH+n5YATh1eUje7po=
+ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
+ github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
+ github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
+@@ -179,8 +173,6 @@ golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9sn
+ golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
+ golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+ golang.org/x/text v0.3.6/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
+-golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac h1:7zkz7BUtwNFFqcowJ+RIgu2MaV/MapERkDIy+mwPyjs=
+-golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac/go.mod h1:tRJNPiyCQ0inRvYxbN9jk5I+vvW/OXSQhTDSoE431IQ=
+ golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
+ golang.org/x/tools v0.0.0-20190114222345-bf090417da8b/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
+ golang.org/x/tools v0.0.0-20190226205152-f727befe758c/go.mod h1:9Yl7xja0Znq3iFh3HoIrodX9oNMXvdceNzlUR8zjMvY=
+diff --git a/v2/pkg/passive/sources.go b/v2/pkg/passive/sources.go
+index 48a439a6..20974779 100644
+--- a/v2/pkg/passive/sources.go
++++ b/v2/pkg/passive/sources.go
+@@ -29,7 +29,6 @@ import (
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/shodan"
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/sitedossier"
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/sonarsearch"
+-	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/spyse"
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/sublist3r"
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/threatbook"
+ 	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping/sources/threatcrowd"
+@@ -59,7 +58,6 @@ var DefaultSources = []string{
+ 	"riddler",
+ 	"securitytrails",
+ 	"shodan",
+-	"spyse",
+ 	"sublist3r",
+ 	"threatcrowd",
+ 	"threatminer",
+@@ -110,7 +108,6 @@ var DefaultAllSources = []string{
+ 	"shodan",
+ 	"sitedossier",
+ 	"sonarsearch",
+-	"spyse",
+ 	"sublist3r",
+ 	"threatbook",
+ 	"threatcrowd",
+@@ -195,8 +192,6 @@ func (a *Agent) addSources(sources []string) {
+ 			a.sources[source] = &sitedossier.Source{}
+ 		case "sonarsearch":
+ 			a.sources[source] = &sonarsearch.Source{}
+-		case "spyse":
+-			a.sources[source] = &spyse.Source{}
+ 		case "sublist3r":
+ 			a.sources[source] = &sublist3r.Source{}
+ 		case "threatbook":
+diff --git a/v2/pkg/runner/config.go b/v2/pkg/runner/config.go
+index b72a23a5..2fc6ac98 100644
+--- a/v2/pkg/runner/config.go
++++ b/v2/pkg/runner/config.go
+@@ -29,7 +29,6 @@ type Providers struct {
+ 	Robtex         []string `yaml:"robtex"`
+ 	SecurityTrails []string `yaml:"securitytrails"`
+ 	Shodan         []string `yaml:"shodan"`
+-	Spyse          []string `yaml:"spyse"`
+ 	ThreatBook     []string `yaml:"threatbook"`
+ 	URLScan        []string `yaml:"urlscan"`
+ 	Virustotal     []string `yaml:"virustotal"`
+@@ -150,9 +149,6 @@ func (c *Providers) GetKeys() subscraping.Keys {
+ 	if len(c.Shodan) > 0 {
+ 		keys.Shodan = c.Shodan[rand.Intn(len(c.Shodan))]
+ 	}
+-	if len(c.Spyse) > 0 {
+-		keys.Spyse = c.Spyse[rand.Intn(len(c.Spyse))]
+-	}
+ 	if len(c.ThreatBook) > 0 {
+ 		keys.ThreatBook = c.ThreatBook[rand.Intn(len(c.ThreatBook))]
+ 	}
+diff --git a/v2/pkg/subscraping/sources/spyse/spyse.go b/v2/pkg/subscraping/sources/spyse/spyse.go
+deleted file mode 100644
+index a935fbc9..00000000
+--- a/v2/pkg/subscraping/sources/spyse/spyse.go
++++ /dev/null
+@@ -1,108 +0,0 @@
+-// Package spyse logic
+-package spyse
+-
+-import (
+-	"context"
+-
+-	"github.com/projectdiscovery/subfinder/v2/pkg/subscraping"
+-	spyse "github.com/spyse-com/go-spyse/pkg"
+-)
+-
+-const searchMethodResultsLimit = 10000
+-
+-// Source is the passive scraping agent
+-type Source struct{}
+-
+-// Run function returns all subdomains found with the service
+-func (s *Source) Run(ctx context.Context, domain string, session *subscraping.Session) <-chan subscraping.Result {
+-	results := make(chan subscraping.Result)
+-
+-	go func() {
+-		defer close(results)
+-
+-		if session.Keys.Spyse == "" {
+-			return
+-		}
+-
+-		client, err := spyse.NewClient(session.Keys.Spyse, nil)
+-		if err != nil {
+-			results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
+-			return
+-		}
+-
+-		domainSvc := spyse.NewDomainService(client)
+-
+-		var searchDomain = "." + domain
+-		var subdomainsSearchParams spyse.QueryBuilder
+-
+-		subdomainsSearchParams.AppendParam(spyse.QueryParam{
+-			Name:     domainSvc.Params().Name.Name,
+-			Operator: domainSvc.Params().Name.Operator.EndsWith,
+-			Value:    searchDomain,
+-		})
+-
+-		totalResults, err := domainSvc.SearchCount(ctx, subdomainsSearchParams.Query)
+-		if err != nil {
+-			results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
+-			return
+-		}
+-
+-		if totalResults == 0 {
+-			return
+-		}
+-
+-		// The default "Search" method returns only first 10 000 subdomains
+-		// To obtain more than 10 000 subdomains the "Scroll" method should be using
+-		// Note: The "Scroll" method is only available for "PRO" customers, so we need to check
+-		// quota.IsScrollSearchEnabled param
+-		if totalResults > searchMethodResultsLimit && client.Account().IsScrollSearchEnabled {
+-			var scrollID string
+-			var scrollResults *spyse.DomainScrollResponse
+-
+-			for {
+-				scrollResults, err = domainSvc.ScrollSearch(ctx, subdomainsSearchParams.Query, scrollID)
+-				if err != nil {
+-					results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
+-					return
+-				}
+-				if len(scrollResults.Items) > 0 {
+-					scrollID = scrollResults.SearchID
+-
+-					for i := range scrollResults.Items {
+-						results <- subscraping.Result{
+-							Source: s.Name(),
+-							Type:   subscraping.Subdomain,
+-							Value:  scrollResults.Items[i].Name,
+-						}
+-					}
+-				}
+-			}
+-		} else {
+-			var limit = 100
+-			var searchResults []spyse.Domain
+-
+-			for offset := 0; int64(offset) < totalResults && int64(offset) < searchMethodResultsLimit; offset += limit {
+-				searchResults, err = domainSvc.Search(ctx, subdomainsSearchParams.Query, limit, offset)
+-				if err != nil {
+-					results <- subscraping.Result{Source: s.Name(), Type: subscraping.Error, Error: err}
+-					return
+-				}
+-
+-				for i := range searchResults {
+-					results <- subscraping.Result{
+-						Source: s.Name(),
+-						Type:   subscraping.Subdomain,
+-						Value:  searchResults[i].Name,
+-					}
+-				}
+-			}
+-		}
+-	}()
+-
+-	return results
+-}
+-
+-// Name returns the name of the source
+-func (s *Source) Name() string {
+-	return "spyse"
+-}
+diff --git a/v2/pkg/subscraping/types.go b/v2/pkg/subscraping/types.go
+index f6535375..9204c037 100644
+--- a/v2/pkg/subscraping/types.go
++++ b/v2/pkg/subscraping/types.go
+@@ -56,7 +56,6 @@ type Keys struct {
+ 	Robtex               string   `json:"robtex"`
+ 	Securitytrails       string   `json:"securitytrails"`
+ 	Shodan               string   `json:"shodan"`
+-	Spyse                string   `json:"spyse"`
+ 	ThreatBook           string   `json:"threatbook"`
+ 	URLScan              string   `json:"urlscan"`
+ 	Virustotal           string   `json:"virustotal"`
