@@ -29,6 +29,7 @@ Source:         %{gosource}
 
 %prep
 %goprep
+rm -rf examples
 
 %generate_buildrequires
 %go_generate_buildrequires
