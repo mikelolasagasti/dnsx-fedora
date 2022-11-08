@@ -4,7 +4,7 @@
 
 # https://github.com/projectdiscovery/subfinder
 %global goipath         github.com/projectdiscovery/subfinder
-Version:                2.5.1
+Version:                2.5.3
 
 %gometa
 
@@ -25,8 +25,6 @@ Summary:        A subdomain discovery tool that discovers valid subdomains for w
 License:        MIT
 URL:            %{gourl}
 Source0:        %{gosource}
-#https://github.com/projectdiscovery/subfinder/pull/542
-Patch0001:      https://github.com/projectdiscovery/subfinder/pull/542/commits/6de5109d2a6a1e51b568bf0f0cde26959d2c350a.patch
 
 %description
 %{common_description}
@@ -35,7 +33,6 @@ Patch0001:      https://github.com/projectdiscovery/subfinder/pull/542/commits/6
 
 %prep
 %goprep
-%patch0001 -p1
 
 %generate_buildrequires
 %go_generate_buildrequires
