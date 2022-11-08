@@ -21,6 +21,7 @@ Summary:        Hybrid memory/disk map
 License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
+Patch:          0001-Don-t-use-EventLogging-and-switch-to-badger-v3.patch
 
 %description %{common_description}
 
@@ -28,7 +29,7 @@ Source:         %{gosource}
 
 %prep
 %goprep
-sed -i '/badgerOptions.EventLogging/d' store/disk/badger.go
+%patch0 -p1
 
 %generate_buildrequires
 %go_generate_buildrequires
