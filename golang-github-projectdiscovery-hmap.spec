@@ -28,6 +28,7 @@ Source:         %{gosource}
 
 %prep
 %goprep
+sed -i '/badgerOptions.EventLogging/d' store/disk/badger.go
 
 %generate_buildrequires
 %go_generate_buildrequires
