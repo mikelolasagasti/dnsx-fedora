@@ -36,6 +36,7 @@ BuildRequires:  golang(github.com/ysmood/gotrace)
 
 %if %{with check}
 %check
+export GODEBUG="tracebackancestors=1000"
 %gocheck
 %endif
 
