@@ -39,6 +39,7 @@ BuildRequires:  chromium
 
 %if %{with check}
 %check
+export GODEBUG="tracebackancestors=1000"
 %gocheck
 %endif
 
