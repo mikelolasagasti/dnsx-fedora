@@ -22,6 +22,8 @@ License:        MIT
 URL:            %{gourl}
 Source:         %{gosource}
 
+BuildRequires:  chromium
+
 %description %{common_description}
 
 %gopkg
