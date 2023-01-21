@@ -3,7 +3,7 @@
 
 # https://github.com/projectdiscovery/katana
 %global goipath         github.com/projectdiscovery/katana
-Version:                0.0.1
+Version:                0.0.3
 
 %gometa -f
 
